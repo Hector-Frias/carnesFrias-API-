@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 /**
  * ?funcion para validar si el usuario se logeo y pueda realizar peticiones
+ * ?segun el rol que tenga
  */
 
 async function validacionToken(req, res, next, rol) {

@@ -30,35 +30,26 @@ function unResultadoEn5Seg() {
 async function login(req, res) {
 
   try {
-
-    let pool = await sql.connect(config);
+    let conex = await sql.connect(config);
     console.log("Perfecto")
-    let usuario = await pool.request().input('Email', sql.VarChar, req.body.Email).query(`select * from Usuarios where Email= @Email`)
+    let usuario = await conex.request().input('Email', sql.VarChar, req.body.Email).query(`select * from Usuarios where Email= @Email`)
     usuario = usuario.recordset.length > 0 ? usuario.recordset[0] : null;
-
     if (usuario != null) {
-      let EmailObteni = (usuario.Email)
-      let PassObteni = (usuario.Pass)
-      if (EmailObteni == req.body.Email) {
-        let resultado = await bcrypt.compare(req.body.Pass, PassObteni);
-        if (resultado) {
-          delete usuario.Pass;
-          var token = await jwt.sign(usuario, process.env.PASS_JWT);
-          console.log(usuario);
-
-          return res.json({
-            mensaje: "el login fue exitoso",
-            token,
-          });
-        } else {
-          return res.send("La contraseña no es correcta salchicha");
-        }
+      let PassObteni = (usuario.Pass);
+      let resultado = await bcrypt.compare(req.body.Pass, PassObteni);
+      if (resultado) {
+        delete usuario.Pass;
+        var token = await jwt.sign(usuario, process.env.PASS_JWT);
+        console.log(usuario);
+        return res.json({
+          mensaje: "el login fue exitoso",
+          token,
+        });
       } else {
-        return res.send("La contraseña no es correcta salchicha");
+        return res.send("La contraseña no es correcta");
       }
-
     } else {
-      return res.send("El usuario no existe");
+      return res.send("El usuario no existe, registrate por favor");
     }
   } catch (error) {
     console.log(error)

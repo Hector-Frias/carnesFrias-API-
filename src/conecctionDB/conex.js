@@ -1,6 +1,6 @@
 require("dotenv").config();
 /**
- * ?conexion a sql server
+ * ?conexion a sql server, se usa variable de entorno
  */
 
 const conexProp = {

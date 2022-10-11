@@ -39,7 +39,7 @@ const sendEmail = async (body, token) => {
 
 /**
  * ?funcion para generar un token de los datos ingresados y enviarlo al email
- * ?del que se quiera registrar. para que confirme. y no ingresar email no validos*/
+ * ?del que se quiera registrar. para que confirme. (para no cargar email no validos)*/
 const registrar = (req, res) => {
   console.log(req.body);
   var token = jwt.sign(req.body, process.env.PASS_JWT);
